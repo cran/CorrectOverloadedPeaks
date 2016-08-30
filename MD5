@@ -1,4 +1,4 @@
-531cce4e88f5c61d8872b27cd66f3682 *DESCRIPTION
+2711e50b385c6fae1e2a8d7d4c270dbc *DESCRIPTION
 5df0e2fdeda7f10e7b4fa1678c1d4999 *NAMESPACE
 e2af58516d3647144db67b8888e8c348 *R/CorrectOverloadedPeaks.R
 c2c4e959de8fc34704c0e91cd325cab1 *R/FitGaussPeak.R
@@ -9,9 +9,13 @@ b84cbd00a69376aa3d4dcd173f01185a *R/is.FlatTopPeak.R
 834d791321ebbf5064c932115209eff2 *R/new.mzXML.R
 cda133286c87a0ccfa46e7e41c3caf15 *R/read.mzXML.R
 508767bce3f61e5bfb3284247ca44d28 *R/write.mzXML.R
+0f15ead9a829a7f6947d7ed1f8e4f4e6 *build/vignette.rds
 1fd5c3d2aa01b4ac846b2de8ab787ae7 *data/datalist
 737a1975442647d2501872f64d64dd39 *data/mzXML_data.rda
 87a15954e9e11ad411c6f8830cb4d418 *data/xcmsRaw_data.rda
+dc662fbf4cfec361ae095cab9af1a9ac *inst/doc/CorrectOverloadedPeaks.R
+e4c604f708184cd49fcec9278a737fd2 *inst/doc/CorrectOverloadedPeaks.Rmd
+dd2bd07cea8ff9903c432d90352aaf08 *inst/doc/CorrectOverloadedPeaks.html
 4fedbbe08d3564cbdd5ba456f1e52ba4 *man/CorrectOverloadedPeaks.Rd
 7567120ff3318e463ae290eb14ea6155 *man/FitGaussPeak.Rd
 5f927dbc4147eb70ea51d5d435350d29 *man/FitPeakByIsotopicRatio.Rd
@@ -20,4 +24,4 @@ ce6a150a11614f1acc5985da9a48ed50 *man/mzXML_data.Rd
 0b047d1ef0ebf61de17ca6794ac8f550 *man/read.mzXML.Rd
 9ea1fd3ebb51516b88869df5959723dd *man/write.mzXML.Rd
 0504614c2789edfe49a25b1d9ebe111d *man/xcmsRaw_data.Rd
-306f978a8cff8dca4359fd93e9d6df04 *vignettes/CorrectOverloadedPeaks.Rmd
+e4c604f708184cd49fcec9278a737fd2 *vignettes/CorrectOverloadedPeaks.Rmd
