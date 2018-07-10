@@ -50,4 +50,3 @@ xcms::plotEIC(xcmsRaw_data, mzrange=matrix(c(350.16,350.17), nrow=1))
 \donttest{xcms::plotEIC(xcmsRaw_data, mzrange=matrix(c(350.16,350.17), nrow=1))}
 
 }
-

@@ -17,6 +17,8 @@
 #'
 #'@export
 #'
+#'@import bitops
+#'
 #'@importFrom utils packageDescription
 #'
 write.mzXML = function(mzXML, filename, precision=c('32', '64'))
@@ -26,17 +28,53 @@ write.mzXML = function(mzXML, filename, precision=c('32', '64'))
 # Software developed in conjunction with the National Cancer Institute      #
 # Distributed under GNU General Public License version 3                    #
 #===========================================================================#
-  Paste  = function(...) paste(..., sep="", collapse="")
+  # helper functions
+  Paste <- function(...) paste(..., sep="", collapse="")
   
-  fprintf = function(fp, level, ..., append=TRUE)
-  { # helper function
+  fprintf <- function(fp, level, ..., append=TRUE)
+  {
     x = paste(..., sep="")
     if (length(x)==0 || is.null(x)) return(NULL)
     spaces = if (level>0) Paste(rep("  ", level)) else ""
     x = gsub("'", "\"", x)
     cat(spaces, x, file=fp, sep="")
     NULL
-  }  # done with local functions
+  }
+  
+  # [Modification_by_JaLi:] 
+  # this is a copy from the caTools function as this package is about to be archived (07/2018)
+  base64encode <- function (x, size = NA, endian = .Platform$endian) 
+  {
+    if ((typeof(x) != "character") & (typeof(x) != "raw")) 
+      x = writeBin(x, raw(), size = size, endian = endian)
+    if ((typeof(x) == "character") & (typeof(x) != "raw")) {
+      nlen <- nchar(x)
+      x = writeBin(x, raw(), size = size, endian = endian)
+      length(x) <- nlen
+    }
+    x = as.integer(x)
+    ndByte = length(x)
+    nBlock = ceiling(ndByte/3)
+    neByte = 4 * nBlock
+    if (ndByte < 3 * nBlock) 
+      x[(ndByte + 1):(3 * nBlock)] = 0
+    dim(x) = c(3, nBlock)
+    y = matrix(as.integer(0), 4, nBlock)
+    y[1, ] = bitops::bitShiftR(x[1, ], 2)
+    y[2, ] = bitops::bitOr(bitops::bitShiftL(x[1, ], 4), bitops::bitShiftR(x[2, ], 4))
+    y[3, ] = bitops::bitOr(bitops::bitShiftL(x[2, ], 2), bitops::bitShiftR(x[3, ], 6))
+    y[4, ] = x[3, ]
+    y = bitops::bitAnd(y, 63)
+    alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+    alpha = strsplit(alpha, NULL)[[1]]
+    z = alpha[y + 1]
+    npbytes = 3 * nBlock - ndByte
+    if (npbytes > 0) 
+      z[(neByte - npbytes + 1):neByte] = "="
+    z = paste(z, collapse = "")
+    return(z)
+  }
+  # done with local functions
   
   precision = match.arg(precision)
   if (!is.character(filename)) stop("read.mzXML: 'filename' has to be a string")
@@ -111,9 +149,7 @@ write.mzXML = function(mzXML, filename, precision=c('32', '64'))
     fprintf(fp, 0, mzXML$scan[[i]]$precursorMz)
     fprintf(fp, 0, mzXML$scan[[i]]$maldi)
     p = as.vector(rbind(mass,peaks))
-    fprintf(fp, 3, Paste("<peaks precision='",precision,
-                         "' byteOrder='network' pairOrder='m/z-int'>",
-                         caTools::base64encode(p, endian="big", size=size), "</peaks>\n"))
+    fprintf(fp, 3, Paste("<peaks precision='",precision, "' byteOrder='network' pairOrder='m/z-int'>", base64encode(p, endian="big", size=size), "</peaks>\n"))
     fprintf(fp, 0, mzXML$scan[[i]]$nameValue)
     if(Num[i]) for (j in 1:Num[i]) fprintf(fp, 2, "</scan>\n")
   }

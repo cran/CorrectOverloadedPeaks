@@ -45,4 +45,3 @@ pk <- ModelGaussPeak(height=10^7, width=4, scan_rate=5, e=0.05, ds=8*10^6, base_
 plot(pk,ylim=ylim,main="sr=5")
 
 }
-

@@ -20,4 +20,3 @@ The main task of read.mzXML and \code{\link{write.mzXML}} functions is to extrac
 In addition attempt is made to keep all other sections of mzXML file as unparsed XML code, so the data can be extracted latter or saved into new mzXML files.
 Those unparsed sections are stored as XML text.
 }
-

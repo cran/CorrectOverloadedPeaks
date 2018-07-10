@@ -69,4 +69,3 @@ FitGaussPeak(y=bpc_raw[peak595s_idx], x=time[peak595s_idx], silent=FALSE)
 FitGaussPeak(y=bpc_raw[peak595s_idx], x=time[peak595s_idx], strip_data="tail", silent=FALSE)
 
 }
-

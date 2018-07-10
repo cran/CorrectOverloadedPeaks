@@ -68,4 +68,3 @@ data(mzXML_data)
 
 \code{\link{write.mzXML}}
 }
-
