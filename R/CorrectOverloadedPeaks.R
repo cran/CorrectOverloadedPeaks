@@ -46,7 +46,7 @@
 #'
 #'@export
 #'
-#'@importClassesFrom xcms xcmsRaw
+#@importClassesFrom xcms xcmsRaw
 #'@importFrom grDevices dev.off
 #'@importFrom grDevices pdf
 #'@importFrom graphics legend

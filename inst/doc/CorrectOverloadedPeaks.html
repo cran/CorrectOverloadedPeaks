@@ -18,7 +18,7 @@
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
+<style type="text/css" data-origin="pandoc">
 div.sourceCode { overflow-x: auto; }
 table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
   margin: 0; padding: 0; vertical-align: baseline; border: none; }
@@ -54,7 +54,29 @@ code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
 code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -74,14 +96,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <p>This short Vignette will show how to correction overloaded signals in (i) an artificial test case and (ii) a provided real data set. To achieve this we need to load the package functions as well as a small data example in xcmsRaw format.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(CorrectOverloadedPeaks)</code></pre></div>
-<pre><code>## Warning in fun(libname, pkgname): mzR has been built against a different Rcpp version (0.12.13)
-## than is installed on your system (0.12.16). This might lead to errors
-## when loading mzR. If you encounter such issues, please send a report,
-## including the output of sessionInfo() to the Bioc support forum at 
-## https://support.bioconductor.org/. For details see also
-## https://github.com/sneumann/mzR/wiki/mzR-Rcpp-compiler-linker-issue.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;xcmsRaw_data&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(CorrectOverloadedPeaks)
+<span class="kw">data</span>(<span class="st">&quot;xcmsRaw_data&quot;</span>)</code></pre></div>
 <p>Let’s model a typical overloaded signal occuring frequently in GC-APCI-MS using the provided function .</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pk &lt;-<span class="st"> </span>CorrectOverloadedPeaks<span class="op">::</span><span class="kw">ModelGaussPeak</span>(<span class="dt">height=</span><span class="dv">10</span><span class="op">^</span><span class="dv">7</span>, <span class="dt">width=</span><span class="dv">3</span>, <span class="dt">scan_rate=</span><span class="dv">10</span>, <span class="dt">e=</span><span class="dv">0</span>, <span class="dt">ds=</span><span class="dv">8</span><span class="op">*</span><span class="dv">10</span><span class="op">^</span><span class="dv">6</span>, <span class="dt">base_line=</span><span class="dv">10</span><span class="op">^</span><span class="dv">2</span>)
 <span class="kw">plot</span>(pk, <span class="dt">main=</span><span class="st">&quot;Gaussian peak of true intensity 10^7 but cutt off at 8*10^6&quot;</span>)</code></pre></div>
@@ -118,6 +134,69 @@ tmp &lt;-<span class="st"> </span>CorrectOverloadedPeaks<span class="op">::</spa
 <pre><code>## [1] &quot;Processing Region/Mass: 5 / 2&quot;</code></pre>
 <pre><code>## [1] &quot;Number of converging sollutions: 160, keeping 36&quot;</code></pre>
 <pre><code>## [1] &quot;Storing non-corrected data information in 'cor_df_all.RData'&quot;</code></pre>
+<pre><code>## Loading required package: xcms</code></pre>
+<pre><code>## Warning: package 'xcms' was built under R version 3.5.2</code></pre>
+<pre><code>## Loading required package: Biobase</code></pre>
+<pre><code>## Loading required package: BiocGenerics</code></pre>
+<pre><code>## Loading required package: parallel</code></pre>
+<pre><code>## 
+## Attaching package: 'BiocGenerics'</code></pre>
+<pre><code>## The following objects are masked from 'package:parallel':
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB</code></pre>
+<pre><code>## The following objects are masked from 'package:stats':
+## 
+##     IQR, mad, sd, var, xtabs</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     Filter, Find, Map, Position, Reduce, anyDuplicated, append,
+##     as.data.frame, basename, cbind, colMeans, colSums, colnames,
+##     dirname, do.call, duplicated, eval, evalq, get, grep, grepl,
+##     intersect, is.unsorted, lapply, lengths, mapply, match, mget,
+##     order, paste, pmax, pmax.int, pmin, pmin.int, rank, rbind,
+##     rowMeans, rowSums, rownames, sapply, setdiff, sort, table,
+##     tapply, union, unique, unsplit, which, which.max, which.min</code></pre>
+<pre><code>## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     'browseVignettes()'. To cite Bioconductor, see
+##     'citation(&quot;Biobase&quot;)', and for packages 'citation(&quot;pkgname&quot;)'.</code></pre>
+<pre><code>## Loading required package: BiocParallel</code></pre>
+<pre><code>## Warning: package 'BiocParallel' was built under R version 3.5.2</code></pre>
+<pre><code>## Loading required package: MSnbase</code></pre>
+<pre><code>## Warning: package 'MSnbase' was built under R version 3.5.2</code></pre>
+<pre><code>## Loading required package: mzR</code></pre>
+<pre><code>## Warning: package 'mzR' was built under R version 3.5.2</code></pre>
+<pre><code>## Loading required package: Rcpp</code></pre>
+<pre><code>## Warning: package 'Rcpp' was built under R version 3.5.2</code></pre>
+<pre><code>## Loading required package: S4Vectors</code></pre>
+<pre><code>## Loading required package: stats4</code></pre>
+<pre><code>## 
+## Attaching package: 'S4Vectors'</code></pre>
+<pre><code>## The following object is masked from 'package:base':
+## 
+##     expand.grid</code></pre>
+<pre><code>## Loading required package: ProtGenerics</code></pre>
+<pre><code>## 
+## This is MSnbase version 2.8.3 
+##   Visit https://lgatto.github.io/MSnbase/ to get started.</code></pre>
+<pre><code>## 
+## Attaching package: 'MSnbase'</code></pre>
+<pre><code>## The following object is masked from 'package:stats':
+## 
+##     smooth</code></pre>
+<pre><code>## The following object is masked from 'package:base':
+## 
+##     trimws</code></pre>
+<pre><code>## 
+## This is xcms version 3.4.2</code></pre>
+<pre><code>## 
+## Attaching package: 'xcms'</code></pre>
+<pre><code>## The following object is masked from 'package:stats':
+## 
+##     sigma</code></pre>
 <p>Let’s load these non-corrected mass traces for further visualization of package capabilities. For instance we can reprocess peak 2 from region 4 using the isotopic ratio approach:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">load</span>(<span class="st">&quot;cor_df_all.RData&quot;</span>)
 <span class="kw">head</span>(cor_df_all[[<span class="dv">4</span>]][[<span class="dv">2</span>]])</code></pre></div>

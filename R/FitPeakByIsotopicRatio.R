@@ -28,7 +28,7 @@
 #'
 #'# plot EIC for 350.165
 #'par(mfrow=c(1,3))
-#'xcms::plotEIC(xcmsRaw_data, mzrange=matrix(c(350.16,350.17), nrow=1))
+#'#'\donttest{xcms::plotEIC(xcmsRaw_data, mzrange=matrix(c(350.16,350.17), nrow=1))}
 
 #'# process example data with testing=TRUE for one individual peak to get the extracted data.frame
 #'# necessary for FitPeakByIsotopicRatio
