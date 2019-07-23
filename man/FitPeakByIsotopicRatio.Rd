@@ -31,22 +31,3 @@ As this function is mainly used internally (\code{\link{CorrectOverloadedPeaks}}
 to the input format. Please prepare a dataframe according to the parameter specifications or process a file using
 \code{\link{CorrectOverloadedPeaks}} with testing=TRUE, which will generate a list structure of such dataframes.
 }
-\examples{
-# load test data
-data("xcmsRaw_data")
-
-# plot EIC for 350.165
-par(mfrow=c(1,3))
-#'\donttest{xcms::plotEIC(xcmsRaw_data, mzrange=matrix(c(350.16,350.17), nrow=1))}
-# process example data with testing=TRUE for one individual peak to get the extracted data.frame
-# necessary for FitPeakByIsotopicRatio
-\donttest{CorrectOverloadedPeaks(data=xcmsRaw_data, method="Isoratio", testing=TRUE, region=4, peak=2)}
-\donttest{load("cor_df_all.RData")}
-
-# correct, plot and return reconstructed data
-\donttest{FitPeakByIsotopicRatio(cor_df=cor_df_all[[4]][[2]], silent=FALSE)}
-
-# plot (corrected) EIC for 350.165
-\donttest{xcms::plotEIC(xcmsRaw_data, mzrange=matrix(c(350.16,350.17), nrow=1))}
-
-}

@@ -16,7 +16,7 @@ This short Vignette will show how to correction overloaded signals in (i) an art
 
 ```{r preload}
 library(CorrectOverloadedPeaks)
-data("xcmsRaw_data")
+data("mzXML_data")
 ```
 
 Let's model a typical overloaded signal occuring frequently in GC-APCI-MS using the provided function \code{ModelGaussPeak}.
@@ -36,26 +36,24 @@ tmp <- CorrectOverloadedPeaks::FitGaussPeak(x=pk[idx,"rt"], y=pk[idx,"int"], sil
 The generated QC plot does show the optimal solution found (green line), indicating the substituted intensity values (grey circles) and obtained parameters (blue text) including the probably peak height (max_int=9.7*10^6) being very close to the true peak height (10^7). Now let's extend this simplified process to peaks from a real data set. The following function call will generate (i) a PDF in the working directory with QC-plots for 10 peaks from 5 chromatographic regions, (ii) processing information output to the console and (iii) a new file "cor_df_all.RData" in the working directory containing all extracted but non-corrected mass traces.
 
 ```{r}
-tmp <- CorrectOverloadedPeaks::CorrectOverloadedPeaks(data=xcmsRaw_data, method="EMG", testing=TRUE)
+tmp <- CorrectOverloadedPeaks::CorrectOverloadedPeaks(data=mzXML_data, method="EMG", testing=TRUE)
 ```
 
 Let's load these non-corrected mass traces for further visualization of package capabilities. For instance we can reprocess peak 2 from region 4 using the isotopic ratio approach:
 
 ```{r}
 load("cor_df_all.RData")
-head(cor_df_all[[4]][[2]])
-tmp <- CorrectOverloadedPeaks::FitPeakByIsotopicRatio(cor_df=cor_df_all[[4]][[2]], silent=FALSE)
+head(cor_df_all[[1]][[1]])
+tmp <- CorrectOverloadedPeaks::FitPeakByIsotopicRatio(cor_df=cor_df_all[[1]][[1]], silent=FALSE)
 ```
 
 The extracted data contain RT and Intensity information for the overloaded mass trace (mz=350.164) as well as isotopes of this mz up to the first isotope which is not itself overloaded (M+2, green triangles). This isotope is evaluated with respect to its ratio to M+0 in the peak front (15.9%) and this ratio in turn is used to scal up the overloaded data points of M+0 (grey circles) as indicated by the black line. The data could of course be processed alternatively using the Gauss method as shown previously for artificial data.
 
 ```{r}
-tmp <- CorrectOverloadedPeaks::FitGaussPeak(x=cor_df_all[[4]][[2]][,"RT"], y=cor_df_all[[4]][[2]][,"int0"], silent=FALSE, xlab="RT", ylab="Intensity")
+tmp <- CorrectOverloadedPeaks::FitGaussPeak(x=cor_df_all[[1]][[1]][,"RT"], y=cor_df_all[[1]][[1]][,"int0"], silent=FALSE, xlab="RT", ylab="Intensity")
 ```
 
-Finally we clean up the temporary files stored on the harddrive.
-
-```{r}
+```{r, echo=FALSE, prompt=FALSE}
 if(file.exists("cor_df_all.RData")) file.remove("cor_df_all.RData")
 if(file.exists("S5_35_01_2241_Int+LM.mzXML.pdf")) file.remove("S5_35_01_2241_Int+LM.mzXML.pdf")
 ```

@@ -28,23 +28,13 @@
 #'
 #'@examples
 #'#load test data
-#'data("xcmsRaw_data")
-#'str(xcmsRaw_data)
-#'
-#'# extract base peak chromatogram and plot
-#'int <- slot(xcmsRaw_data,"env")$intensity
-#'scans <- slot(xcmsRaw_data,"scanindex")
-#'time <- slot(xcmsRaw_data,"scantime")
-#'bpc_raw <- apply(cbind(scans,c(scans[-1],length(int))), 1, function(x){max(int[x[1]:x[2]])})
-#'plot(y=bpc_raw, x=time, type="l", main="BasePeak Chromatogram", 
-#'     ylab="Intensity", xlab="Retention Time")
-#'
-#'#correct one overloaded peak, plot and return reconstructed data
-#'peak595s_idx <- c(133:163)
-#'FitGaussPeak(y=bpc_raw[peak595s_idx], x=time[peak595s_idx], silent=FALSE)
-#'
-#'# assume tailing in the peak and leave out tail data in fit calculation
-#'FitGaussPeak(y=bpc_raw[peak595s_idx], x=time[peak595s_idx], strip_data="tail", silent=FALSE)
+#'data("mzXML_data")
+#'names(mzXML_data)
+#'str(mzXML_data[["scan"]][[1]])
+#'pk <- ModelGaussPeak(height=10^7, width=3, scan_rate=10, e=0, ds=8*10^6, base_line=10^2)
+#'plot(pk, main="Gaussian peak of true intensity 10^7 but cutt off at 8*10^6")
+#'idx <- pk[,"int"]>0.005 * max(pk[,"int"])
+#'tmp <- FitGaussPeak(x=pk[idx,"rt"], y=pk[idx,"int"], silent=FALSE, xlab="RT", ylab="Intensity")
 #'
 #'@export
 #'

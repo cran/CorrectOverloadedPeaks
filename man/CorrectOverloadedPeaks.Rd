@@ -31,7 +31,7 @@ CorrectOverloadedPeaks(data = NULL, method = c("Isoratio", "Gauss",
 An corrected xcmsRaw- or mzXML-object which can be exported to file. Additionally a QC-plot pdf-file if silent=FALSE.
 }
 \description{
-\code{CorrectOverloadedPeaks} will take an xcmsRaw data structure and search for overloaded peaks within the mass traces.
+\code{CorrectOverloadedPeaks} will take an xcmsRaw data structure (or any imported mzXML) and search for overloaded peaks within the mass traces.
 based on further parameters. It will correct overloaded peaks automatically using an Gaussian or IsotopicRatio approach,
 generate QC plots and write the corrected data back into the original xcmsRaw.
 }
@@ -45,10 +45,6 @@ function definition. They have been set to values determined empirically to be w
 coupled to GC and LC via APCI and ESI respectively. For more details please see \url{http://dx.doi.org/10.1021/acs.analchem.6b02515}.
 }
 \examples{
-#load xcmsRaw test data, then correct, plot and return reconstructed data
-data("xcmsRaw_data")
-\donttest{CorrectOverloadedPeaks(data=xcmsRaw_data, method="Gauss", silent=FALSE)}
-
 #load mzXML test data
 data(mzXML_data)
 \donttest{CorrectOverloadedPeaks(data=mzXML_data, method="EMG", silent=FALSE)}
