@@ -12,11 +12,11 @@
 #'@param y A numeric vector, ion intensities.
 #'@param scale_range Specifies the expected range for the true peak to exceed the observed, where scale_range=c(1,100) would assume anything between not overloaded and 100-fold overloaded.
 #'@param steps Specifies a step parameter used to create a sequence within 'scale_range' to test for good fits, higher=more precision, fewer=faster.
-#'@param cutoff Overloaded peaks will be screwed from gaussian shape already when approaching detector saturation (DS), cutoff=0.95 ensures that points just before DS will not be used to model fit.
+#'@param cutoff Overloaded peaks will be screwed from Gaussian shape already when approaching detector saturation (DS), cutoff=0.95 ensures that points just before DS will not be used to model fit.
 #'@param idx If not NULL, 'idx' is expected to specify points to correct explicitly (as a numeric-vector within 1:length(x)).
 #'@param weight_front A weighting parameter to punish deviations in peak front and tail differently; 0.5=use front/tail equally, 1=use only front, 0=use only tail.
 #'@param strip_data Use all provided data if 'none' (default). Strip 'front' or 'tail' data in case you observe peak fronting or tailing respectively.
-#'@param account_for_baseline_offset If TRUE will substract min(y) from y before fitting parameters.
+#'@param account_for_baseline_offset If TRUE will subtract min(y) from y before fitting parameters.
 #'@param method The method for peak shape calculation. Can be 'Gauss' or 'EMG' (exponentially modified gauss).
 #'@param silent For testing purposes some QC-plot will be generated if silent=FALSE.
 #'@param fix_sd Supply a fix standard deviation (sd) for the peak or leave NULL to estimate sd within function.

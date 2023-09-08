@@ -4,14 +4,22 @@
 \alias{CorrectOverloadedPeaks}
 \title{Correct Overloaded Peaks from GC-MS data.}
 \usage{
-CorrectOverloadedPeaks(data = NULL, method = c("Isoratio", "Gauss",
-  "EMG")[1], detection_limit = 1, ds = NULL, silent = TRUE,
-  testing = FALSE, attotwm = FALSE, region = NULL, peak = NULL)
+CorrectOverloadedPeaks(
+  data = NULL,
+  method = c("Isoratio", "Gauss", "EMG"),
+  detection_limit = 1,
+  ds = NULL,
+  silent = TRUE,
+  testing = FALSE,
+  attotwm = FALSE,
+  region = NULL,
+  peak = NULL
+)
 }
 \arguments{
 \item{data}{An xcmsRaw-object or an mzXML-object as imported by \code{\link{read.mzXML}}.}
 
-\item{method}{Either Gauss or EMG (usually better results) or Isoratio (more robust for non gaussian peak shapes).}
+\item{method}{Either Gauss or EMG (usually better results) or Isoratio (more robust for non-Gaussian peak shapes).}
 
 \item{detection_limit}{If=1 only peaks hitting detector saturation (ds) will be corrected, can be lowered to 0.95 to catch also peaks going into saturation.}
 
@@ -23,7 +31,7 @@ CorrectOverloadedPeaks(data = NULL, method = c("Isoratio", "Gauss",
 
 \item{attotwm}{All-the-Time-of-the-World-Mode. If calculation time doesn't matter try this out. :)}
 
-\item{region}{From an initial QC-Plot file you may reprocess a specific overloaded region. Dont forget to specify the ds parameter explicitly.}
+\item{region}{From an initial QC-Plot file you may reprocess a specific overloaded region. Don't forget to specify the ds parameter explicitly.}
 
 \item{peak}{You may further restrict the reprocessing to a specific peak within the region.}
 }
@@ -31,27 +39,36 @@ CorrectOverloadedPeaks(data = NULL, method = c("Isoratio", "Gauss",
 An corrected xcmsRaw- or mzXML-object which can be exported to file. Additionally a QC-plot pdf-file if silent=FALSE.
 }
 \description{
-\code{CorrectOverloadedPeaks} will take an xcmsRaw data structure (or any imported mzXML) and search for overloaded peaks within the mass traces.
-based on further parameters. It will correct overloaded peaks automatically using an Gaussian or IsotopicRatio approach,
-generate QC plots and write the corrected data back into the original xcmsRaw.
+\code{CorrectOverloadedPeaks} will take an xcmsRaw data structure 
+    (or any imported mzXML) and search for overloaded peaks within the mass traces. 
+    It will correct overloaded peaks automatically using an Gaussian or 
+    IsotopicRatio approach, generate QC plots and write the corrected data 
+    back into the original xcmsRaw.
 }
 \details{
-This is a high level function to batch pre-process Metabolomics data which are partially overloaded before continuing with
-the standard workflow of peak identification etc.. It relies internally on \code{\link{FitGaussPeak}} and \code{\link{FitPeakByIsotopicRatio}}
-to modifiy data of individual intensity signal. Basically the function aims to identify automatically overloaded regions
-and extracts base peak chromatograms for all overloaded m/z traces within these regions, which are corrected and put back
-into the original data structure. For simplicity some potentially interesting parameters are hidden at the top of the 
-function definition. They have been set to values determined empirically to be working for a Bruker impact II MS (high-res QTOF)
-coupled to GC and LC via APCI and ESI respectively. For more details please see \url{http://dx.doi.org/10.1021/acs.analchem.6b02515}.
+This is a high level function to batch pre-process metabolomics data 
+    which are partially overloaded before continuing with the standard workflow 
+    of peak identification etc.. It relies internally on \code{\link{FitGaussPeak}} 
+    and \code{\link{FitPeakByIsotopicRatio}} to modify data of individual intensity 
+    signal. Basically the function aims to identify automatically overloaded regions
+    and extracts base peak chromatograms for all overloaded m/z traces within these 
+    regions, which are corrected and put back into the original data structure. 
+    For simplicity some potentially interesting parameters are hidden at the top of 
+    the function definition. They have been set to values determined empirically to 
+    be working for a Bruker impact II MS (high-res QTOF) coupled to GC and LC via 
+    APCI and ESI respectively. For more details please 
+    see \doi{10.1021/acs.analchem.6b02515}.
 }
 \examples{
-#load mzXML test data
-data(mzXML_data)
-\donttest{CorrectOverloadedPeaks(data=mzXML_data, method="EMG", silent=FALSE)}
+\dontrun{
+  # load mzXML test data
+  data(mzXML_data)
+  CorrectOverloadedPeaks(data = mzXML_data, method = "EMG", silent = FALSE)
+}
 
 }
 \references{
-\url{http://dx.doi.org/10.1021/acs.analchem.6b02515}
+\doi{10.1021/acs.analchem.6b02515}
 }
 \seealso{
 \code{\link{ModelGaussPeak}}

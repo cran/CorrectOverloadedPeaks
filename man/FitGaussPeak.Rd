@@ -4,10 +4,21 @@
 \alias{FitGaussPeak}
 \title{Extrapolate a flat top peak using a Gauss approach.}
 \usage{
-FitGaussPeak(x, y, scale_range = c(1, 10), steps = 10, cutoff = 0.95,
-  idx = NULL, weight_front = 0.5, strip_data = "none",
-  account_for_baseline_offset = TRUE, method = c("Gauss", "EMG")[1],
-  silent = TRUE, fix_sd = NULL, ...)
+FitGaussPeak(
+  x,
+  y,
+  scale_range = c(1, 10),
+  steps = 10,
+  cutoff = 0.95,
+  idx = NULL,
+  weight_front = 0.5,
+  strip_data = "none",
+  account_for_baseline_offset = TRUE,
+  method = c("Gauss", "EMG")[1],
+  silent = TRUE,
+  fix_sd = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{A numeric vector, retention times.}
@@ -18,7 +29,7 @@ FitGaussPeak(x, y, scale_range = c(1, 10), steps = 10, cutoff = 0.95,
 
 \item{steps}{Specifies a step parameter used to create a sequence within 'scale_range' to test for good fits, higher=more precision, fewer=faster.}
 
-\item{cutoff}{Overloaded peaks will be screwed from gaussian shape already when approaching detector saturation (DS), cutoff=0.95 ensures that points just before DS will not be used to model fit.}
+\item{cutoff}{Overloaded peaks will be screwed from Gaussian shape already when approaching detector saturation (DS), cutoff=0.95 ensures that points just before DS will not be used to model fit.}
 
 \item{idx}{If not NULL, 'idx' is expected to specify points to correct explicitly (as a numeric-vector within 1:length(x)).}
 
@@ -26,7 +37,7 @@ FitGaussPeak(x, y, scale_range = c(1, 10), steps = 10, cutoff = 0.95,
 
 \item{strip_data}{Use all provided data if 'none' (default). Strip 'front' or 'tail' data in case you observe peak fronting or tailing respectively.}
 
-\item{account_for_baseline_offset}{If TRUE will substract min(y) from y before fitting parameters.}
+\item{account_for_baseline_offset}{If TRUE will subtract min(y) from y before fitting parameters.}
 
 \item{method}{The method for peak shape calculation. Can be 'Gauss' or 'EMG' (exponentially modified gauss).}
 

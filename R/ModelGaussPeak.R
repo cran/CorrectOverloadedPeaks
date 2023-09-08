@@ -1,16 +1,16 @@
-#'@title Create and modify parameters of an artifical chromatographic peak.
+#'@title Create and modify parameters of an artificial chromatographic peak.
 #'
 #'@description
-#'\code{ModelGaussPeak} will create a potentially overloaded gaussian peak of requested width and height.
+#'\code{ModelGaussPeak} will create a potentially overloaded Gaussian peak of requested width and height.
 #'
 #'@details
-#'The main task of \code{\link{ModelGaussPeak}} is to create peak data in gaussian shape for testing. 
+#'The main task of \code{\link{ModelGaussPeak}} is to create peak data in Gaussian shape for testing. 
 #'Width is meant in the chromatographic sense, i.e. the time between peak front and tail hitting the baseline.
 #'
 #'@param height True peak height (=intensity counts).
 #'@param width Peak width in time units (preferably seconds).
 #'@param scan_rate Is determining the resolution of data points per time unit (preferably seconds).
-#'@param e Error term giving the percent amount of deviation from the ideal gaussian curve for individual data points.
+#'@param e Error term giving the percent amount of deviation from the ideal Gaussian curve for individual data points.
 #'@param ds Detector saturation. Intensity values will be cut off at this point if requested.
 #'@param base_line Defines if peak is supposed to have a higher base level.
 #'
