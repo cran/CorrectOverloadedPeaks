@@ -13,8 +13,10 @@
 #'     However, feel free to send me an e-mail if you are interested in using
 #'     the function but cant get it working.
 #'
-#' @param filename A mzData file as exported by `xcms::write.mzdata()`.
-#' @param fmt Output format. Currently only xcmsRaw is supported.
+#' @param filename A path to a mzData file (as exported by `xcms::write.mzdata()`).
+#' @param fmt Output format. Currently `xcmsRaw` and `xcmsRawLike` are supported.
+#'     The latter is an S4 class similar to xcmsRaw but allowing to omit the xcms
+#'     package.
 #' @param verbose Print messages to console.
 #' 
 #' @return
@@ -32,11 +34,14 @@
 #'   identical(x@env$mz, x2@env$mz)
 #'   identical(x@scanindex, x2@scanindex)
 #'   file.remove(c('test.mzData', 'test.mzXML'))
+#'   
+#'   # check that objects are independent (not identical)
+#'   identical(methods::new("xcmsRawLike"), methods::new("xcmsRawLike"))
 #' } 
 #'
 #' @export
 #' 
-read.mzData <- function(filename, fmt = c("xcmsRaw"), verbose = FALSE) {
+read.mzData <- function(filename, fmt = c("xcmsRaw", "xcmsRawLike"), verbose = FALSE) {
   
   fmt <- match.arg(fmt)
   
@@ -48,7 +53,8 @@ read.mzData <- function(filename, fmt = c("xcmsRaw"), verbose = FALSE) {
   if (tolower(tools::file_ext(filename))!="mzdata") warning("read.mzData: File '", filename, "' does not have extension 'mzData'.")
   
   # verify that suggested packages are available
-  verify_suggested(c("xcms", "xml2", "methods", "bitops"))
+  verify_suggested(c("xml2", "methods", "bitops"))
+  if (fmt == "xcmsRaw") verify_suggested("xcms")
 
   xt <- xml2::read_xml(x = filename)
   if (is.null(xt)) { stop("read.mzData: xml2::read_xml returns NULL upon import of file '", filename, "'.") }
@@ -61,7 +67,7 @@ read.mzData <- function(filename, fmt = c("xcmsRaw"), verbose = FALSE) {
   if (!verbose) message("Processing file ", filename)
   
   # remove empty scans if present as xcmsRaw format can not handle these
-  if (fmt %in% c("xcmsRaw")) {
+  if (fmt %in% c("xcmsRaw", "xcmsRawLike")) {
     flt <- sapply(xt, function(xn) { length(xn$intenArrayBinary$data) })==1
     if (!any(flt)) { stop("read.mzData: file '", filename, "' contains only empty scans (filed $intenArrayBinary$data.") }
     xt <- xt[flt]
@@ -124,11 +130,13 @@ read.mzData <- function(filename, fmt = c("xcmsRaw"), verbose = FALSE) {
       attributes(x[[idx]])$value
     }))
   } else {
-    message("read.mzData: file '", filename, "' contains not polarity information (PSI:1000037).")
+    message("read.mzData: file '", filename, "' contains no polarity information (PSI:1000037).")
     pol <- rep("unknown", length(xt))
   }
 
-  out <- methods::new("xcmsRaw")
+  if (fmt == "xcmsRaw") { out <- xcms::deepCopy(methods::new("xcmsRaw")) }
+  if (fmt == "xcmsRawLike") { out <- methods::new("xcmsRawLike") }
+  
   assign(x = "intensity", value = unlist(int, use.names = FALSE), envir = out@env)
   assign(x = "mz", value = unlist(mz, use.names = FALSE), envir = out@env)
   out@tic <- unname(sapply(int, sum, USE.NAMES = FALSE))
@@ -138,7 +146,39 @@ read.mzData <- function(filename, fmt = c("xcmsRaw"), verbose = FALSE) {
   out@acquisitionNum <- as.integer(unname(sapply(xt, function(xn) { attr(xn, "id") })))
   out@mzrange <- range(out@env$mz)
   out@scanrange <- range(out@acquisitionNum)
-  out@filepath <- xcms::xcmsSource("test.mzXML")
+  if (fmt == "xcmsRaw") {
+    out@filepath <- xcms::xcmsSource(filename)
+  }
+  if (fmt == "xcmsRawLike") {
+    out@filepath <- basename(filename)
+  }
   
   return(out)
 }
+
+#' @title S4 class xcmsRawLike.
+#' @exportClass xcmsRawLike
+#' @rdname read.mzData
+methods::setClass(
+  Class = "xcmsRawLike", 
+  slots = list(
+    env = "environment",
+    tic = "numeric",
+    scantime = "numeric",
+    scanindex = "integer",
+    polarity = "factor",
+    acquisitionNum = "integer",
+    mzrange = "numeric",
+    scanrange = "numeric",
+    filepath = "character"
+  )
+)
+
+methods::setMethod(
+  "initialize", 
+  "xcmsRawLike", 
+  function(.Object, ...) {
+    .Object@env <- new.env()
+    methods::callNextMethod()
+  }
+)

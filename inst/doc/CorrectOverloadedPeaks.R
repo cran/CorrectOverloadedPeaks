@@ -21,7 +21,7 @@ tmp <- CorrectOverloadedPeaks::FitPeakByIsotopicRatio(cor_df=cor_df_all[[1]][[1]
 ## -----------------------------------------------------------------------------
 tmp <- CorrectOverloadedPeaks::FitGaussPeak(x=cor_df_all[[1]][[1]][,"RT"], y=cor_df_all[[1]][[1]][,"int0"], silent=FALSE, xlab="RT", ylab="Intensity")
 
-## ---- echo=FALSE, prompt=FALSE------------------------------------------------
+## ----echo=FALSE, prompt=FALSE-------------------------------------------------
 if(file.exists("cor_df_all.RData")) file.remove("cor_df_all.RData")
 if(file.exists("S5_35_01_2241_Int+LM.mzXML.pdf")) file.remove("S5_35_01_2241_Int+LM.mzXML.pdf")
 if(file.exists("mzXML_data.pdf")) file.remove("mzXML_data.pdf")
